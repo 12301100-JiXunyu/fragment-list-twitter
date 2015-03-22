@@ -8,7 +8,6 @@ import java.util.Collections;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -19,16 +18,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class MainActivity extends Activity
+public class MainActivity extends Activity implements TagListFragment.OnFragmentInteractionListener
 {
-   // name of SharedPreferences XML file that stores the saved searches 
+    @Override
+    public void sendUrlToWebViewFragment(String url) {
+        getFragmentManager().beginTransaction()
+                .replace(R.id.frameLayout, WebViewFragment.newInstance(url))
+                .addToBackStack(null)
+                .commit();
+    }
+
+    // name of SharedPreferences XML file that stores the saved searches
    private static final String SEARCHES = "searches";
    
    private EditText queryEditText; // EditText where user enters a query
@@ -58,7 +64,9 @@ public class MainActivity extends Activity
       // create ArrayAdapter and use it to bind tags to the ListView
       adapter = new ArrayAdapter<String>(this, R.layout.list_item, tags);
       // MOVE to ListFragment _ setListAdapter(adapter);
-      
+       getFragmentManager().beginTransaction()
+               .add(R.id.frameLayout, new TagListFragment())
+               .commit();
       // register listener to save a new or edited search 
       ImageButton saveButton = 
          (ImageButton) findViewById(R.id.saveButton);
@@ -85,7 +93,7 @@ public class MainActivity extends Activity
                tagEditText.getText().toString());
             queryEditText.setText(""); // clear queryEditText
             tagEditText.setText(""); // clear tagEditText
-            
+
             ((InputMethodManager) getSystemService(
                Context.INPUT_METHOD_SERVICE)).hideSoftInputFromWindow(
                tagEditText.getWindowToken(), 0);  
@@ -126,7 +134,7 @@ public class MainActivity extends Activity
       }
    } 
    
-   /* MOVE to ListFragment and Activity Interface implementation
+  /* // MOVE to ListFragment and Activity Interface implementation
    OnItemClickListener itemClickListener = new OnItemClickListener() 
    {
       @Override
@@ -137,14 +145,21 @@ public class MainActivity extends Activity
          String tag = ((TextView) view).getText().toString();
          String urlString = getString(R.string.searchURL) +
             Uri.encode(savedSearches.getString(tag, ""), "UTF-8");
-         
+
+
+          getFragmentManager().beginTransaction()
+                  .replace(R.id.frameLayout, new WebViewFragment())
+                  .addToBackStack(null)
+                  .commit();
+
          // create an Intent to launch a web browser    
          Intent webIntent = new Intent(Intent.ACTION_VIEW, 
             Uri.parse(urlString));                      
 
          startActivity(webIntent); // launches web browser to view results
       } 
-   }; // end itemClickListener declaration*/
+   }; // end itemClickListener declaration
+    */
    
    // CHANGED _ to provide itemLongClickListener to the ListFragment
    // displays a dialog allowing the user to delete or edit a saved search

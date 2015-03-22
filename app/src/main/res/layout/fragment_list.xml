@@ -1,0 +1,24 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.deitel.twittersearches.TagListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+     <TextView
+        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:gravity="center_horizontal"
+         android:textSize="30dp"
+        android:text="@string/taggedSearches"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <ListView
+        android:id="@id/android:list"
+        android:layout_marginTop="40dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
+
+     </ListView>
+
+</FrameLayout>
